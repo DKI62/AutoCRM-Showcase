@@ -1,0 +1,99 @@
+{
+  "expo": {
+    "name": "Auto CRM Showcase",
+    "slug": "auto-crm-showcase",
+    "scheme": "autocrm-showcase",
+    "version": "1.0.0",
+    "platforms": [
+      "android"
+    ],
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#101019",
+    "icon": "./assets/autocrm-icon.png",
+    "experiments": {
+      "reactCompiler": true
+    },
+    "android": {
+      "package": "com.autocrm.showcase",
+      "versionCode": 1,
+      "allowBackup": false,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/autocrm-adaptive.png",
+        "backgroundColor": "#101019"
+      },
+      "softwareKeyboardLayoutMode": "resize",
+      "permissions": [
+        "android.permission.SCHEDULE_EXACT_ALARM"
+      ],
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.USE_EXACT_ALARM"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-navigation-bar",
+        {
+          "enforceContrast": false
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#101019",
+          "image": "./assets/autocrm-icon.png"
+        }
+      ],
+      "expo-dev-client",
+      "expo-sqlite",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Выберите фото или видео для карточки автомобиля.",
+          "cameraPermission": "Камера нужна для фотографий автомобиля и дефектов.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-sharing",
+        {
+          "android": {
+            "enabled": true,
+            "singleShareMimeTypes": [
+              "image/*",
+              "video/*",
+              "text/plain"
+            ],
+            "multipleShareMimeTypes": [
+              "image/*",
+              "video/*"
+            ]
+          }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#7161EE",
+          "defaultChannel": "reminders-v1"
+        }
+      ],
+      "expo-font",
+      "expo-video",
+      "expo-image",
+      "expo-secure-store"
+    ],
+    "extra": {
+      "router": {}
+    },
+    "updates": {
+      "enabled": false
+    },
+    "ios": {}
+  }
+}

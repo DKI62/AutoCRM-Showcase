@@ -1,0 +1,22 @@
+{
+  "name": "auto-crm-showcase-local",
+  "main": "worker.ts",
+  "compatibility_date": "2026-05-03",
+  "vars": {
+    "FIXTURE_BOT_NAME": "showcase_fixture_bot"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "auto-crm-showcase-local",
+      "database_id": "00000000-0000-4000-8000-000000000001",
+      "migrations_dir": "migrations",
+      "remote": false
+    }
+  ],
+  "triggers": {
+    "crons": []
+  },
+  "workers_dev": false,
+  "preview_urls": false
+}

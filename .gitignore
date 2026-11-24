@@ -1,0 +1,119 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# generated native folders
+/ios
+/android
+
+# Local tools and generated verification artifacts
+.cache/
+coverage/
+test-results/
+*.log
+.env
+.env.*
+!.env.example
+build/
+*.apk
+*.aab
+
+# Local environment and credentials
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.npmrc
+.netrc
+.wrangler/
+/server/telegram/wrangler.jsonc
+credentials.json
+*service-account*.json
+*.keystore
+*.crt
+*.cer
+*.pfx
+id_rsa*
+id_ed25519*
+
+# Local databases, exports, and customer media
+*.db
+*.db-*
+*.sqlite*
+*.sql.gz
+*.dump
+*.jsonl
+*.jsonl.*
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+dumps/
+backups/
+exports/
+vehicle-media*/
+/screenshots/
+diagnostics/
+*.jpg
+*.jpeg
+*.webp
+*.heic
+*.mp4
+*.mov
+*.png
+!/assets/autocrm-icon.png
+!/assets/autocrm-adaptive.png
+
+# Generated output and personal tooling
+/eas-preview-inspect/
+.gradle/
+.vscode/
+.idea/
+.codex/
+.claude/
+*.iml
+*.tmp
+*.bak
+*.hprof
+*.aar
+
+# Existing Expo template license is kept locally pending a project license decision.
+/LICENSE
+
+# Only reviewed synthetic screenshots belong here.
+!/docs/screenshots/*.png
+!/docs/banner.png
