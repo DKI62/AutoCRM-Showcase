@@ -22,7 +22,7 @@ Expo prebuild and EAS were used in the deployed edition. Signed updates retain t
 
 ## Limits
 
-The app targets Android. Exact reminder delivery depends on platform policy. The Showcase mobile build has no production network target and the server cannot deliver Telegram messages without replacing its fixture boundary. Physical screenshot capture and Android smoke are separate from automated tests.
+The app targets Android. Exact reminder delivery depends on platform policy. The Showcase app runs locally. Its server protocol tests use temporary SQLite through a D1 adapter and a fake Telegram transport. Device acceptance requires testing on Android hardware. [Architecture diagram](../README.en.md#stack-and-architecture) · [Dependency review and CI](GITHUB.md#verification-notes).
 
 ## Résumé summary
 

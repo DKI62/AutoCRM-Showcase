@@ -1,7 +1,7 @@
-import { demoBackup } from '../demo/fixture';
+import { demoBackup, demoPhotoName } from '../demo/fixture';
 import type { Environment } from '../server/telegram/worker';
 import assert from 'node:assert/strict';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { mkdtempSync, readFileSync, readdirSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -1546,13 +1546,20 @@ test('Android-compatible SQLite: real vehicle/archive queries on fresh, S0, 0.2 
 test('Showcase backup restores only synthetic rows and merging again is idempotent', async () => {
   const { db, repo } = await fixture();
   try {
-    const sample = demoBackup();
-    assert.equal(await repo.restoreRows(sample.tables, new Map()), 5);
-    assert.equal(await repo.restoreRows(sample.tables, new Map()), 0);
+    const photo = readFileSync(join('demo', 'assets', 'sedan.png'));
+    const md5 = createHash('md5').update(photo).digest('hex');
+    const sample = demoBackup(Date.now(), { size: photo.length, md5 });
+    assert.deepEqual(sample.files, [{ path: demoPhotoName, size: photo.length, md5 }]);
+    const paths = new Map([[demoPhotoName, demoPhotoName]]);
+    assert.equal(await repo.restoreRows(sample.tables, paths), 5);
+    assert.equal(await repo.restoreRows(sample.tables, paths), 0);
     const restored = await repo.snapshot();
     assert.equal(restored.lot_tasks?.length, 4);
     assert.equal(restored.lot_notes?.length, 5);
-    assert.equal(restored.lot_media?.length, 0);
+    assert.equal(restored.lot_media?.length, 1);
+    assert.equal(restored.lot_media?.[0]?.relative_path, demoPhotoName);
+    assert.equal(restored.lots?.find(row => row.make === 'Demo')?.cover_id, restored.lot_media?.[0]?.id);
+    assert.ok(restored.lots?.every(row => [row.phone, row.seller, row.source_url, row.autoteka_url].every(value => !value)));
     assert.equal(restored.lots?.filter(row => row.status === 'completed').length, 1);
   } finally { db.close(); }
 });

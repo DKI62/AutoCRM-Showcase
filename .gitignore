@@ -105,15 +105,30 @@ diagnostics/
 .idea/
 .codex/
 .claude/
+.agents/
+AGENTS.md
+CLAUDE.md
+.mcp.json
 *.iml
 *.tmp
 *.bak
 *.hprof
 *.aar
 
-# Existing Expo template license is kept locally pending a project license decision.
+# Ignore the local Expo template license. Portfolio terms live in LICENSE.md.
 /LICENSE
+/docs/RESOURCES.md
 
-# Only reviewed synthetic screenshots belong here.
-!/docs/screenshots/*.png
+# Approved portfolio captures.
+!/docs/screenshots/home-dark.png
+!/docs/screenshots/vehicles-dark.png
+!/docs/screenshots/vehicle-photos-dark.png
+!/docs/screenshots/history-dark.png
+!/docs/screenshots/tasks-dark.png
+!/docs/screenshots/task-edit-dark.png
+!/docs/screenshots/archive-dark.png
+!/docs/screenshots/home-light.png
+!/docs/screenshots/notifications-dark.png
+!/docs/screenshots/backup-dark.png
 !/docs/banner.png
+!/demo/assets/sedan.png

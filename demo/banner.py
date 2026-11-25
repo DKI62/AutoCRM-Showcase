@@ -1,30 +1,43 @@
-"""Compose the social preview from reviewed screenshots of the isolated emulator."""
+"""Compose a GitHub social preview from three approved Android captures."""
+from io import BytesIO
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 docs = Path(__file__).resolve().parents[1] / 'docs'
-files = [docs / 'screenshots' / name for name in ('vehicle-dark.png', 'tasks-dark.png')]
-if not all(file.is_file() for file in files):
-    raise SystemExit('Capture vehicle-dark.png and tasks-dark.png from the demo before composing the banner.')
+screens = [
+    ('home-dark.png', 'Dashboard'),
+    ('vehicles-dark.png', 'Vehicle list'),
+    ('vehicle-photos-dark.png', 'Photo attachments'),
+]
 
-canvas = Image.new('RGB', (1280, 640), '#101019')
+canvas = Image.new('RGB', (1280, 640), '#101017')
 draw = ImageDraw.Draw(canvas)
-font_dir = Path('C:/Windows/Fonts')
-title = ImageFont.truetype(str(font_dir / 'segoeuib.ttf'), 73)
-subtitle = ImageFont.truetype(str(font_dir / 'segoeui.ttf'), 31)
-draw.rectangle((76, 188, 142, 193), fill='#A291FF')
-draw.text((74, 214), 'Auto CRM', font=title, fill='#F7F5FF')
-draw.text((76, 320), 'Offline-first Android CRM', font=subtitle, fill='#C9C4DB')
-for index, file in enumerate(files):
-    with Image.open(file) as original:
-        screenshot = original.convert('RGB')
-        if screenshot.height <= screenshot.width:
-            raise SystemExit('Use portrait Android captures.')
-        screenshot.thumbnail((276, 540), Image.Resampling.LANCZOS)
-        x = 640 + index * 304 + (276 - screenshot.width) // 2
-        y = (640 - screenshot.height) // 2
-        draw.rounded_rectangle((x - 3, y - 3, x + screenshot.width + 2, y + screenshot.height + 2),
-                               radius=5, fill='#49415D')
-        canvas.paste(screenshot, (x, y))
-canvas.save(docs / 'banner.png', optimize=True)
+fonts = Path('C:/Windows/Fonts')
+title = ImageFont.truetype(str(fonts / 'segoeuib.ttf'), 70)
+subtitle = ImageFont.truetype(str(fonts / 'segoeui.ttf'), 28)
+caption = ImageFont.truetype(str(fonts / 'segoeui.ttf'), 17)
+
+draw.rounded_rectangle((64, 137, 110, 141), radius=2, fill='#A799FF')
+draw.text((61, 162), 'AutoCRM', font=title, fill='#F7F5FF')
+draw.text((61, 239), 'Showcase', font=title, fill='#F7F5FF')
+draw.multiline_text((64, 355), 'Offline-first CRM for vehicle\nsourcing and follow-up', font=subtitle, fill='#C8C5D6', spacing=9)
+
+for index, (name, label) in enumerate(screens):
+    with Image.open(docs / 'screenshots' / name) as photo:
+        frame = photo.convert('RGB')
+        if frame.height <= frame.width:
+            raise SystemExit('Expected a portrait capture: ' + name)
+        frame.thumbnail((222, 464), Image.Resampling.LANCZOS)
+        x = 511 + index * 241 + (222 - frame.width) // 2
+        y = 72 + (464 - frame.height) // 2
+        draw.rounded_rectangle((x - 4, y - 4, x + frame.width + 3, y + frame.height + 3),
+                               radius=6, fill='#45405B')
+        canvas.paste(frame, (x, y))
+        draw.text((x + frame.width / 2, 558), label, anchor='mt', font=caption, fill='#C8C5D6')
+
+result = BytesIO()
+canvas.save(result, format='PNG', optimize=True)
+if result.tell() >= 1_000_000:
+    raise SystemExit('GitHub social preview must be smaller than 1 MB.')
+(docs / 'banner.png').write_bytes(result.getvalue())

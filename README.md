@@ -1,47 +1,65 @@
-# Auto CRM
+[**Русский**](README.md) · [English](README.en.md)
 
-**Offline-first Android CRM for automotive professionals.**
+# AutoCRM Showcase
 
-A custom client project built through independent software development. It supports the daily work around vehicle leads, inspections, follow-ups and archiving. The portfolio edition preserves the application and the server protocol with synthetic data and isolated configuration.
+![AutoCRM Showcase. Главная, список автомобилей и фотографии из реальной Android-сборки](docs/banner.png)
 
-[Русская версия](README.ru.md) · [Engineering case study](docs/CASE-STUDY.md) · [Demo capture guide](docs/screenshots/README.md)
+**Автономная Android CRM для подбора и оценки автомобилей.**
 
-## Features
+В работе с автомобилем легко потерять договорённости, фотографии осмотра и срок следующего звонка, если они лежат в разных приложениях. AutoCRM собирает их в карточке автомобиля. Информацию можно открыть и обновить без связи, например во время осмотра.
 
-- Vehicle records with prices, specification, linked tasks, notes, activity history and attachments.
-- Daily agenda, recurring follow-ups, archive, search and filters.
-- Android local reminders using notification channels and exact alarms when granted. In-app records remain available offline.
-- Folder-based backup and restore, media import and a choice of light, dark or system appearance.
+Showcase — портфолио-версия с отдельным Android-пакетом и демонстрационными данными. [Инженерный кейс](docs/CASE-STUDY.md) · [Запуск на Samsung](docs/ANDROID-DEMO.md)
 
-## Gallery
+## Возможности
 
-The [capture plan](docs/screenshots/README.md) covers the home screen, list, vehicle detail, forms, tasks, archive, settings and both themes. Genuine Android captures from the isolated Showcase package are pending.
+- Карточки автомобилей с характеристиками, оценками, статусами, поиском и фильтрами.
+- Фото и видео, заметки и история изменений по автомобилю.
+- Задачи, перенос сроков, повторения и локальные напоминания Android.
+- Архив автомобилей, экспорт и восстановление из папки.
+- Светлая, тёмная и системная темы.
 
-## Stack and architecture
+## Галерея
 
-React Native, Expo SDK 57, Expo Router and strict TypeScript on Android. SQLite stores CRM records. Expo SecureStore handles binding credentials in the deployed edition. The custom Expo Android module opens system settings for exact alarms. Cloudflare Workers, D1 and the Telegram Bot API form the original companion service. Showcase executes the server protocol with an injected fixture transport.
+Кадры сняты на Samsung в Showcase с демонстрационными записями. Нажмите на изображение, чтобы открыть его в полном размере.
+
+<!-- showcase-gallery:start -->
+
+| | |
+|---|---|
+| <strong>Главная и план дня</strong><br><a href="docs/screenshots/home-dark.png"><img src="docs/screenshots/home-dark.png" alt="Главная и план дня" width="255"></a> | <strong>Автомобили и фильтры</strong><br><a href="docs/screenshots/vehicles-dark.png"><img src="docs/screenshots/vehicles-dark.png" alt="Автомобили и фильтры" width="255"></a> |
+| <strong>Карточка и фотографии</strong><br><a href="docs/screenshots/vehicle-photos-dark.png"><img src="docs/screenshots/vehicle-photos-dark.png" alt="Карточка и фотографии" width="255"></a> | <strong>Заметки и история</strong><br><a href="docs/screenshots/history-dark.png"><img src="docs/screenshots/history-dark.png" alt="Заметки и история" width="255"></a> |
+| <strong>Активные задачи</strong><br><a href="docs/screenshots/tasks-dark.png"><img src="docs/screenshots/tasks-dark.png" alt="Активные задачи" width="255"></a> | <strong>Сроки и повторения</strong><br><a href="docs/screenshots/task-edit-dark.png"><img src="docs/screenshots/task-edit-dark.png" alt="Сроки и повторения" width="255"></a> |
+| <strong>Архив автомобилей</strong><br><a href="docs/screenshots/archive-dark.png"><img src="docs/screenshots/archive-dark.png" alt="Архив автомобилей" width="255"></a> | <strong>Главная в светлой теме</strong><br><a href="docs/screenshots/home-light.png"><img src="docs/screenshots/home-light.png" alt="Главная в светлой теме" width="255"></a> |
+| <strong>Настройки уведомлений</strong><br><a href="docs/screenshots/notifications-dark.png"><img src="docs/screenshots/notifications-dark.png" alt="Настройки уведомлений" width="255"></a> | <strong>Экспорт и восстановление</strong><br><a href="docs/screenshots/backup-dark.png"><img src="docs/screenshots/backup-dark.png" alt="Экспорт и восстановление" width="255"></a> |
+
+<!-- showcase-gallery:end -->
+
+## Стек и архитектура
+
+React Native, Expo SDK 57, Expo Router, TypeScript, SQLite и локальный модуль Expo на Kotlin для открытия настроек точных будильников Android. В репозитории также есть обработчики Cloudflare Worker и тесты протокола с адаптером D1 и имитацией Telegram.
 
 ```mermaid
 flowchart LR
-    UI["Expo Router screens"] --> Repo["CRM repository"]
-    Repo --> DB[("SQLite · records and outbox")]
-    Repo --> Media["App-private media files"]
-    DB --> Reminders["Android local reminders"]
-    Repo --> Backup["Folder export and restore"]
-    DB -. "Production push and pull protocol" .-> Worker["Worker API · authentication and pairing"]
-    Worker --> D1[("D1 · task mirror and action queue")]
-    Worker -. "Showcase fixture responses" .-> Bot["Telegram delivery interface"]
+    subgraph Mobile ["Showcase на Android"]
+        Screens["Экраны Expo Router"] --> Repository["Репозиторий CRM"]
+        Repository --> SQLite[("SQLite и очередь изменений задач")]
+        Repository --> Media["Фото и видео в каталоге приложения"]
+        Repository --> Reminders["Каналы уведомлений и будильники Android"]
+        Repository --> Backup["Экспорт и восстановление из папки"]
+    end
+
+    subgraph Tests ["Тесты серверного протокола"]
+        Fixtures["Синтетические запросы"] --> Worker["Обработчики Worker"]
+        Worker --> D1[("Временная SQLite через адаптер D1")]
+        Worker --> FakeBot["Имитация ответов Telegram"]
+    end
 ```
 
-The [repository](src/repositories/crm-repository.ts) serializes local writes through a transactional store. [SQLite migrations](src/storage/migrations.ts) preserve existing IDs and relationships. Media files live separately from the database and backup manifests validate paths and file metadata before restoration.
+SQLite хранит карточки, заметки, задачи, события и настройки. [Репозиторий CRM](src/repositories/crm-repository.ts) последовательно выполняет записи и объединяет связанные изменения в транзакции. [Миграции](src/storage/migrations.ts) сохраняют идентификаторы и связи. Фото и видео хранятся в каталоге приложения. При восстановлении проверяются пути, размеры, контрольные суммы и связи записей.
 
-## Synchronization and security
+## Локальный запуск
 
-The deployed mobile protocol uploads a revisioned task projection and pulls device-scoped actions. The local outbox retains changes until the server accepts them. Pairing v2 stages a candidate first and binds it only after the phone confirms a code from the chat. Existing authorized devices can continue through the migration. The [server guide](docs/SERVER.md) describes local protocol tests and the boundary around real delivery.
-
-## Run locally
-
-Use Node.js 22, npm, a JDK and an Android SDK with an emulator or an isolated device. Android SDK setup follows the Expo local build documentation. The native alarm module requires a development build.
+Для сборки на Windows нужны Node.js 24, npm, JDK 17 и Android SDK, а также эмулятор или тестовое устройство.
 
 ```powershell
 npm ci
@@ -49,19 +67,22 @@ $env:APP_VARIANT = 'development'
 npm run android
 ```
 
-After installation, use `npm start` to restart Metro if needed. The dev package is `com.autocrm.showcase.dev`. The separate Showcase package is `com.autocrm.showcase`. OTA is disabled. An opt-in [synthetic backup generator](docs/screenshots/README.md) prepares sample records without contacting external services.
+Для последующих запусков Metro используйте `npm start`. Пакет Development Build — `com.autocrm.showcase.dev`. Автономный Showcase использует `com.autocrm.showcase` и запускается без Metro. [Сборка APK и импорт демоданных](docs/ANDROID-DEMO.md)
 
-## Checks
+## Проверки
 
 ```powershell
 npm run typecheck
-npm run lint
+npx --no-install eslint src server tests demo app.config.ts
 npm test
-npx expo-doctor
 ```
 
-## Status and use
+На Windows тесты включают регрессии на системной SQLite и сценарии серверного протокола на синтетических данных. [CI и известные замечания по зависимостям](docs/GITHUB.md)
 
-This is a source portfolio edition of the 1.0.0 Android project. Live Telegram connections and OTA are disabled here. Local notification timing depends on Android permissions and system scheduling. See [release notes](CHANGELOG.md) and the [security policy](SECURITY.md).
+## Демонстрационный режим и ограничения
 
-The source is presented for portfolio review. No open-source license has been granted. Third-party dependencies remain subject to their own licenses.
+Showcase работает локально. В этой редакции сетевой Telegram и OTA отключены. Привязка и синхронизация проверяются в изолированных тестах. Доставка уведомлений зависит от разрешений Android и настроек энергосбережения. Резервные копии в папке хранятся без шифрования. [Серверные тесты](docs/SERVER.md) · [Изменения](CHANGELOG.md) · [Политика безопасности](SECURITY.md)
+
+## Лицензирование
+
+**All rights reserved.** Исходники предоставляются для ознакомления с портфолио. Лицензии и уведомления сторонних компонентов действуют отдельно. [Условия использования](LICENSE.md)
