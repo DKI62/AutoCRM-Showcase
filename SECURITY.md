@@ -1,7 +1,15 @@
-# Security
+[**Русский**](SECURITY.md) · [English](SECURITY.en.md)
 
-Report suspected security issues privately using GitHub's private vulnerability reporting if enabled, or contact the maintainer privately. Please omit real tokens, customer records and full database exports. Synthetic steps, an affected commit and redacted results are sufficient.
+# Безопасность
 
-The mobile Showcase requester is disabled for Telegram sync. The server requires an injected fixture transport for message delivery and does not contain a live Bot API endpoint. Pairing and sync are exercised against synthetic identities, including old bindings and unconfirmed candidates. Local Android builds use independent package IDs and have OTA disabled.
+[К проекту](README.md)
 
-Keep local credentials, databases, signing keys and captured data out of Git. Before sharing images, verify that the device and records belong to a separate demo installation.
+Сообщайте о проблемах через приватную форму GitHub, если она включена, или напрямую сопровождающему проекта. Укажите версию, шаги с тестовыми данными и ожидаемый результат. Исключите токены, реальные записи и выгрузки базы.
+
+Showcase отключает сетевой Telegram и обновления Expo OTA. Серверные тесты работают с синтетическими данными. Экспорт в папку не шифруется. Храните копии, ключи и параметры локальных сред вне Git.
+
+## Известные уязвимости
+
+Три записи High из `npm audit` относятся к одной цепочке Android: `expo-router@57.0.31` → `query-string@7.1.3` → `decode-uri-component@0.2.2`. Уязвимости декодера относятся к доступности приложения при обработке некорректного ввода. Showcase ограничивает длину входящих ссылок и отклоняет некорректное кодирование. Серверный бандл Worker не включает эту цепочку. [CVE-2026-118664](https://github.com/advisories/GHSA-qr28-fpjm-wq7f) · [CVE-2026-45822](https://github.com/advisories/GHSA-vcc3-ghjq-m6fr)
+
+Прямое переопределение декодера на исправленную ESM-версию `0.5.1` несовместимо с CommonJS-вызовом из `query-string@7.1.3`. Проверенный выпуск Router 57.0.32 сохраняет эту цепочку. В Router 58.0.13 зависимость от `query-string` удалена. Для исправления в рамках SDK 57 нужен отдельно проверенный перенос исправления. [Метаданные Router 57.0.32](https://registry.npmjs.org/expo-router/57.0.32) · [Метаданные Router 58.0.13](https://registry.npmjs.org/expo-router/58.0.13)

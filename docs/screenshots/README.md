@@ -1,18 +1,16 @@
-# Showcase gallery
+# Галерея · Gallery
 
-These screens show AutoCRM Showcase on Android with sample records.
+[Русский](../../README.md#скриншоты) · [English](../../README.en.md#screenshots) · [Баннер / Banner](../banner.png)
 
-| Screen | Capture |
-| --- | --- |
-| Dashboard and today's agenda | [Dark mode](home-dark.png) |
-| Vehicle list, search, and filters | [Vehicles](vehicles-dark.png) |
-| Vehicle card and photo attachments | [Photos](vehicle-photos-dark.png) |
-| Vehicle notes and activity history | [History](history-dark.png) |
-| Active tasks and due dates | [Tasks](tasks-dark.png) |
-| Task editor, rescheduling, and recurrence | [Task editor](task-edit-dark.png) |
-| Archived vehicle | [Archive](archive-dark.png) |
-| Dashboard in light mode | [Light mode](home-light.png) |
-| Local notification settings | [Notifications](notifications-dark.png) |
-| Record review and folder backup settings | [Backup](backup-dark.png) |
-
-[Repository banner](../banner.png)
+| Экран | Screen | PNG |
+| --- | --- | --- |
+| Главная | Dashboard | [home-dark.png](home-dark.png) |
+| Список автомобилей | Vehicle list | [vehicles-dark.png](vehicles-dark.png) |
+| Карточка и фотографии | Vehicle and photos | [vehicle-photos-dark.png](vehicle-photos-dark.png) |
+| Задачи | Tasks | [tasks-dark.png](tasks-dark.png) |
+| Заметки и история | Notes and history | [history-dark.png](history-dark.png) |
+| Сроки и повторения | Scheduling and recurrence | [task-edit-dark.png](task-edit-dark.png) |
+| Архив | Archive | [archive-dark.png](archive-dark.png) |
+| Светлая тема | Light theme | [home-light.png](home-light.png) |
+| Настройки уведомлений | Notification settings | [notifications-dark.png](notifications-dark.png) |
+| Резервное копирование | Backup settings | [backup-dark.png](backup-dark.png) |
