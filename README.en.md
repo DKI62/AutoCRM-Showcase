@@ -107,7 +107,6 @@ The ESLint command matches the CI scope. `npm run lint` uses Expo lint with a na
 - [Android build and sample data](docs/ANDROID.en.md).
 - [Server protocol and local checks](docs/SERVER.en.md).
 - [Security and known advisories](SECURITY.en.md).
-- [Changelog](CHANGELOG.en.md).
 
 ## Limitations
 
